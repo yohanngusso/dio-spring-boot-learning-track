@@ -3,6 +3,7 @@ package dio.budgeting.infrastructure.persistence.entity;
 import dio.budgeting.domain.Category;
 import dio.budgeting.domain.Transaction;
 import dio.budgeting.domain.TransactionId;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,6 +21,8 @@ import java.util.UUID;
 public class TransactionEntity {
     @Id
     private UUID id;
+
+    @Column(nullable = false, length = Transaction.MAX_DESCRIPTION_LENGTH)
     private String description;
     private long amount;
 

@@ -3,7 +3,6 @@ package dio.budgeting.application.output;
 import dio.budgeting.domain.Transaction;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public record TransactionOutput(String id, String description, String category, double value) {
     public static TransactionOutput from(Transaction transaction) {
@@ -11,6 +10,11 @@ public record TransactionOutput(String id, String description, String category, 
                 transaction.getId().uuid().toString(),
                 transaction.getDescription(),
                 transaction.getCategory().name(),
-                BigDecimal.valueOf(transaction.getAmount()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+                centsToReais(transaction.getAmount()));
+    }
+
+    /** O domínio guarda centavos; a saída (REST e IA) fala em reais. */
+    public static double centsToReais(long cents) {
+        return BigDecimal.valueOf(cents, 2).doubleValue();
     }
 }
